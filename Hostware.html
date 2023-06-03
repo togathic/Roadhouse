@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: black;
+    }
+    .button {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      background-color: blue;
+      color: white;
+      border: 2px solid silver;
+      cursor: pointer;
+    }
+    .button.green {
+      background-color: green;
+    }
+    .button.yellow {
+      background-color: yellow;
+    }
+    .button.red {
+      background-color: red;
+    }
+    .timer {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 5px;
+      font-size: 12px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="buttons-container">
+    <button class="button" onclick="changeColor(1)">
+      1
+      <span class="timer" id="timer-1"></span>
+    </button>
+    <button class="button" onclick="changeColor(2)">
+      2
+      <span class="timer" id="timer-2"></span>
+    </button>
+<button class="button" onclick="changeColor(3)">
+      3
+      <span class="timer" id="timer-3"></span>
+    </button>
+    <button class="button" onclick="changeColor(4)">
+      4
+      <span class="timer" id="timer-4"></span>
+    </button><button class="button" onclick="changeColor(5)">
+      5
+      <span class="timer" id="timer-5"></span>
+    </button>
+    <button class="button" onclick="changeColor(6)">
+      6
+      <span class="timer" id="timer-6"></span>
+    </button><button class="button" onclick="changeColor(7)">
+      7
+      <span class="timer" id="timer-7"></span>
+    </button>
+    <button class="button" onclick="changeColor(8)">
+      8
+      <span class="timer" id="timer-8"></span>
+    </button><button class="button" onclick="changeColor(9)">
+      9
+      <span class="timer" id="timer-9"></span>
+    </button>
+    <button class="button" onclick="changeColor(10)">
+      10
+      <span class="timer" id="timer-10"></span>
+    </button><button class="button" onclick="changeColor(11)">
+      11
+      <span class="timer" id="timer-11"></span>
+    </button>
+    <button class="button" onclick="changeColor(12)">
+      12
+      <span class="timer" id="timer-12"></span>
+    </button><button class="button" onclick="changeColor(13)">
+      13
+      <span class="timer" id="timer-13"></span>
+    </button>
+    <button class="button" onclick="changeColor(14)">
+      14
+      <span class="timer" id="timer-14"></span>
+    </button><button class="button" onclick="changeColor(15)">
+      15
+      <span class="timer" id="timer-15"></span>
+    </button>
+    <button class="button" onclick="changeColor(16)">
+      16
+      <span class="timer" id="timer-16"></span>
+    </button><button class="button" onclick="changeColor(17)">
+      17
+      <span class="timer" id="timer-17"></span>
+    </button>
+    <button class="button" onclick="changeColor(18)">
+      18
+      <span class="timer" id="timer-18"></span>
+    </button><button class="button" onclick="changeColor(19)">
+      19
+      <span class="timer" id="timer-19"></span>
+    </button>
+    <button class="button" onclick="changeColor(20)">
+      20
+      <span class="timer" id="timer-20"></span>
+    </button><button class="button" onclick="changeColor(21)">
+      21
+      <span class="timer" id="timer-21"></span>
+    </button>
+    <button class="button" onclick="changeColor(22)">
+      22
+      <span class="timer" id="timer-22"></span>
+    </button><button class="button" onclick="changeColor(23)">
+      23
+      <span class="timer" id="timer-23"></span>
+    </button>
+      <!-- Add more buttons here -->
+    <button class="button" onclick="changeColor(24)">
+      24
+      <span class="timer" id="timer-24"></span>
+    </button>
+  </div>
+
+  <script>
+    var colors = ['blue', 'green', 'yellow', 'red'];
+    var buttonStatus = [];
+    var timers = [];
+
+    function changeColor(buttonNumber) {
+      var button = document.querySelector("#buttons-container button:nth-child(" + buttonNumber + ")");
+      var currentColorIndex = buttonStatus[buttonNumber] || 0;
+      var nextColorIndex = (currentColorIndex + 1) % colors.length;
+      var nextColor = colors[nextColorIndex];
+
+      button.className = 'button ' + nextColor;
+      buttonStatus[buttonNumber] = nextColorIndex;
+
+      if (nextColor !== 'blue') {
+        startTimer(buttonNumber, nextColor);
+      } else {
+        stopTimer(buttonNumber);
+      }
+    }
+
+    function startTimer(buttonNumber, color) {
+      var timerElement = document.querySelector("#timer-" + buttonNumber);
+      clearInterval(timers[buttonNumber]);
+
+      if (timerElement.startTime === undefined || color !== timerElement.currentColor) {
+        timerElement.startTime = Date.now();
+        timerElement.currentColor = color;
+      }
+
+      timers[buttonNumber] = setInterval(function() {
+        var elapsedMilliseconds = Date.now() - timerElement.startTime;
+        var elapsedSeconds = Math.floor(elapsedMilliseconds / 1000) % 60;
+        var elapsedMinutes = Math.floor(elapsedMilliseconds / (1000 * 60)) % 60;
+        var elapsedHours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
+
+        var timeString = padZero(elapsedHours) + ":" + padZero(elapsedMinutes) + ":" + padZero(elapsedSeconds);
+        timerElement.innerText = timeString;
+      }, 1000);
+    }
+
+    function stopTimer(buttonNumber) {
+      clearInterval(timers[buttonNumber]);
+      var timerElement = document.querySelector("#timer-" + buttonNumber);
+      timerElement.innerText = "";
+      timerElement.startTime = undefined;
+      timerElement.currentColor = undefined;
+    }
+
+    function padZero(num) {
+      return num.toString().padStart(2, '0');
+    }
+  </script>
+</body>
+</html>
